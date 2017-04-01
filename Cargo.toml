@@ -1,0 +1,6 @@
+[package]
+name = "amalgate"
+version = "0.1.0"
+authors = ["Nathaniel Pisarski <nathanpisarski@gmail.com>"]
+
+[dependencies]
