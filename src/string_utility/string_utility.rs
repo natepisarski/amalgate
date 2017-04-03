@@ -12,7 +12,12 @@ pub fn split<'a>(line: &'a str, split_char: &'a char) -> Vec<String> {
                 current_string = String::new();
             }
         }
-        current_string.push(char);
+        if char != *split_char {
+            current_string.push(char);
+        }
+    }
+    if current_string.len() > 0 {
+        current_collection.push(current_string);
     }
     return current_collection;
 }

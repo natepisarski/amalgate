@@ -6,28 +6,21 @@ use std;
 
 use line_reader::file_line_collection::FileLineCollection;
 use line_reader::file_line::FileLine;
-/*
-pub struct FileLine {
-    pub file_name: String,
-    pub line_number: u32,
-    pub line_text: String
-}
 
-impl FileLine {
-
-}
-
-pub struct FileLineCollection {
-    lines: Vec<FileLine>
-}
-*/
 pub struct FileLineReader {
     pub file_name: String
 }
 
 impl FileLineReader {
     pub fn read(&self) -> FileLineCollection {
-        let mut file: File = File::open(&self.file_name).unwrap();
+
+        let mut file: File = match File::open(&self.file_name) {
+            Ok(file) => file,
+            _ => {
+                let current_directory = std::env::current_dir().unwrap();
+                panic!(format!("{} is not a valid file in {}", self.file_name, current_directory.into_os_string().into_string().unwrap()));
+            }
+        };
         let mut contents = String::new();
         file.read_to_string(&mut contents);
 
@@ -39,6 +32,7 @@ impl FileLineReader {
             line_vector.push(
                 FileLine {file_name: self.file_name.clone(), line_number: counter, line_text: line.to_string()}
             );
+            counter = counter + 1;
         }
         return FileLineCollection {lines: line_vector}
     }
