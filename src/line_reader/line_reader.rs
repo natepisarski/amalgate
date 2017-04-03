@@ -4,7 +4,9 @@ use std::fs;
 use std::fs::File;
 use std;
 
-
+use line_reader::file_line_collection::FileLineCollection;
+use line_reader::file_line::FileLine;
+/*
 pub struct FileLine {
     pub file_name: String,
     pub line_number: u32,
@@ -18,7 +20,7 @@ impl FileLine {
 pub struct FileLineCollection {
     lines: Vec<FileLine>
 }
-
+*/
 pub struct FileLineReader {
     pub file_name: String
 }
