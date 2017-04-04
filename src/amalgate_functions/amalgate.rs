@@ -33,7 +33,7 @@ impl InnerAmalgateFunctions {
 }
 impl AmalgateFunctions {
     pub fn contains_amalgate_function(&self, line: &str) -> bool {
-        line.contains("=") && !line.contains(" = ") && !line.contains("==")
+        line.trim().starts_with("=") && !line.contains(" = ") && !line.trim().starts_with("==")
     }
 
     pub fn amalgate_function_arguments(&self, line: &FileLine) -> Result<Vec<String>, String> {
