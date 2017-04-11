@@ -19,28 +19,3 @@ pub trait AmalgateMultilineFunction {
     fn used_on(name: &String) -> bool
         where Self: Sized;
 }
-/*
-impl std::fmt::Display for AmalgateFunction {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Amalgate Function");
-    }
-}
-
-impl std::error::Error for AmalgateFunction {
-    fn description(&self) -> &str { "Error in Amalgate Function" }
-}
-
-impl std::fmt::Display for AmalgateMultilineFunction {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Amalgate Multiline Function");
-    }
-}
-
-impl std::error::Error for AmalgateMultilineFunction {
-    fn description(&self) -> &str { "Error in Amalgate Multiline Function" }
-}
-*/
-pub enum BeforeOrAfter {
-    Before,
-    After
-}

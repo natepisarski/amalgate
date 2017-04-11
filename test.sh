@@ -1,6 +1,5 @@
 HERE IS A FILE
 =import test2.sh
-=somethingWeCantDo
 THERE SHOULD BE MORE THAN 3 L= INES IN IT
 HERE
 IT

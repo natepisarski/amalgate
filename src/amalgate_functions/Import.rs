@@ -6,6 +6,7 @@ use line_reader::file_line::FileLine;
 pub struct Import {
 
 }
+
 impl AmalgateFunction for Import {
 
     /// Amalgate Function
@@ -17,9 +18,11 @@ impl AmalgateFunction for Import {
 
         // Pull all of the lines from the files in order
         for filename in arguments {
-            let file_contents = FileLineReader { file_name: filename.to_string() }.read().lines();
+            let file_contents: Vec<FileLine> = FileLineReader { file_name: filename.to_string() }.read().lines;
             for line in file_contents {
-                file_lines.push(line.clone());
+                let innerLine: FileLine = line;
+                let innerLineText: String = innerLine.line_text;
+                file_lines.push(innerLineText);
             }
         }
 
@@ -30,13 +33,13 @@ impl AmalgateFunction for Import {
 
         // Adds the calculated file lines
         for line in file_lines {
-            resultant_lines.push(line.line_text);
+            resultant_lines.push(line);
         }
 
         return resultant_lines;
     }
 
     fn used_on(&self, item: &String) -> bool {
-        if item.eq("import") || item.eq("imp");
+        return item.eq("import") || item.eq("imp");
     }
 }
