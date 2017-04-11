@@ -1,9 +1,10 @@
-use std;
+#[allow(unused_imports)]
 use std::borrow::*;
+#[allow(unused_imports)]
 use std::rc::*;
-use amalgate_functions::amalgate::*;
 
-use amalgate_functions::Import::Import;
+use amalgate_functions::amalgate::*;
+use amalgate_functions::import::Import;
 
 use line_reader::file_line::FileLine;
 use line_reader::file_line_collection::FileLineCollection;
@@ -17,16 +18,16 @@ pub struct AmalgateReader {
 
 impl AmalgateReader {
     pub fn initialize_single_line_functions(&mut self) {
-        self.single_line_functions = vec![Rc::new(Import{})];
+        self.single_line_functions = vec![Rc::new(Import {})];
     }
 
+    #[allow(dead_code)]
     pub fn initialize_multi_line_functions(&mut self) {
         self.multi_line_functions = vec![];
     }
 
     pub fn get_function(&self, call_result: &String) -> Rc<AmalgateFunction> {
         for function in self.single_line_functions.as_slice() {
-            println!("Looping...");
             let single_line_function: Rc<AmalgateFunction> = function.clone();
             if (*single_line_function).used_on(call_result) {
                 return single_line_function;
@@ -41,7 +42,7 @@ impl AmalgateReader {
         line.trim().starts_with("=") && !line.trim().starts_with("==")
     }
 
-    /// Multiline functions
+    #[allow(dead_code)]
     pub fn is_multiline_function(&self, line: &str) -> bool {
         let line_content = line.trim();
 
@@ -58,7 +59,7 @@ impl AmalgateReader {
     }
 
     pub fn get_multiline_arguments(&self, line: &str) -> (Vec<String>, Vec<String>) {
-        (vec![], vec![])
+        (vec![], vec![]) // TODO: (Arguments from line and body)
     }
 
     pub fn amalgate_function_arguments(&self, line: &FileLine) -> Result<Vec<String>, String> {
@@ -81,7 +82,7 @@ impl AmalgateReader {
             let words = split(&line.line_text, &' ');
             for word in words {
                 if word.starts_with("=") {
-                    let mut name: String = substring(&word, &1, &((word.len() - 1) as u32));
+                    let name: String = substring(&word, &1, &((word.len() - 1) as u32));
                     return Ok(name.as_str().replace("=", ""))
                 }
             }
@@ -91,9 +92,9 @@ impl AmalgateReader {
         return Err(format!("Another error has occurred processing amalgate functions"))
     }
 
-    /// Desugars an amalgate file. This will leave us with a script that
-    /// only contains amalgate module calls (i.e, remote, user defined, or built-in) that must
-    /// run at runtime.
+    /// Completely desugars an amalgate file. Desugaring is the largest step in the amalgate process.
+    /// All preprocessing, dependency checking / injection, etc. Should happen here. Works automatically
+    /// based on the members of self.singleLineFunctions and self.multiLineFunctions.
     pub fn desugar(&self, filename: &str) -> Vec<String> {
         let lines: FileLineCollection = FileLineReader { file_name: String::from(filename) }.read();
         let mut result_lines: Vec<String> = Vec::new();
@@ -111,6 +112,10 @@ impl AmalgateReader {
         return result_lines;
     }
 
+    /// Complete transpilation of a file. Currently, this initializes the amalgate reader and
+    /// runs a desugar on your file. However, in the future there will be steps other than desugar
+    /// (like parsing and syntax checking), so transpile will not remain the entry point to the program
+    /// forever.
     pub fn transpile(filename: &str) -> () {
         let mut amalgate_reader: AmalgateReader = AmalgateReader { single_line_functions: vec![], multi_line_functions: vec![] };
         amalgate_reader.initialize_single_line_functions();

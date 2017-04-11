@@ -1,4 +1,7 @@
+#[allow(unused_imports)]
 use amalgate_functions::amalgate_reader::*;
+
+#[allow(unused_imports)]
 use line_reader::file_line::FileLine;
 
 #[test]

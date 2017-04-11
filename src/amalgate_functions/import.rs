@@ -1,11 +1,13 @@
 use amalgate_functions::amalgate::*;
 use line_reader::line_reader::FileLineReader;
-use line_reader::file_line_collection::FileLineCollection;
 use line_reader::file_line::FileLine;
 
-pub struct Import {
 
-}
+/// Import is the 'base' function in Amalgate. Historically, it's the reason Amalgate was made.
+/// It allows you to import bash files together, letting you split your bash code in more readable,
+/// logical chunks. The advantage is that you are left with one file, whereas using bash's read
+/// would leave you with a script with dependencies.
+pub struct Import { }
 
 impl AmalgateFunction for Import {
 
@@ -20,9 +22,9 @@ impl AmalgateFunction for Import {
         for filename in arguments {
             let file_contents: Vec<FileLine> = FileLineReader { file_name: filename.to_string() }.read().lines;
             for line in file_contents {
-                let innerLine: FileLine = line;
-                let innerLineText: String = innerLine.line_text;
-                file_lines.push(innerLineText);
+                let inner_line: FileLine = line;
+                let inner_line_text: String = inner_line.line_text;
+                file_lines.push(inner_line_text);
             }
         }
 
@@ -39,6 +41,8 @@ impl AmalgateFunction for Import {
         return resultant_lines;
     }
 
+    /// Amalgate Function
+    /// Trigger on: import or imp
     fn used_on(&self, item: &String) -> bool {
         return item.eq("import") || item.eq("imp");
     }

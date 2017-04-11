@@ -1,5 +1,5 @@
-use std::str;
-use string_utility::string_utility::*;
+#[allow(unused_imports)]
+use string_utility::string_utility::{substring, split, into_string};
 
 #[test]
 fn test_split() {
