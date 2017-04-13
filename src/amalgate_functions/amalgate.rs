@@ -22,8 +22,7 @@ pub trait AmalgateMultilineFunction {
     /// Given the lines that have come before the calling site, the list of arguments, and the lines
     /// constituting the body, return a value. Control flow is returned to the end of the multi-line's
     /// body declaration.
-    fn call(existing_lines: &Vec<String>, argument: Vec<String>, body: Vec<String>) -> Vec<String>
-        where Self: Sized;
+    fn call(&self, existing_lines: &Vec<String>, argument: Vec<String>, body: Vec<String>) -> Vec<String>;
 
     /// Works exactly the same as used_on does for AmalgateFunction, except the reader will
     /// only interpret calls in the form:
@@ -34,6 +33,5 @@ pub trait AmalgateMultilineFunction {
     /// ==
     ///
     /// to be multiline functions.
-    fn used_on(name: &String) -> bool
-        where Self: Sized;
+    fn used_on(&self, name: &String) -> bool;
 }

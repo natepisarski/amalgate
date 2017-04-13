@@ -45,3 +45,14 @@ pub fn substring(line: &str, start_index: &u32, length: &u32) -> String { // [TO
     let characters: Vec<char> = line.chars().skip(*start_index as usize).take(*length as usize).collect();
     return into_string(characters.as_slice());
 }
+
+pub fn getchar(line: &str, index: usize) -> char {
+    let mut counter: usize = 0;
+    for character in line.chars() {
+        if counter == index {
+            return character.clone();
+        }
+        counter = counter + 1;
+    }
+    panic!("getchar index {} is out of range", index);
+}
