@@ -58,8 +58,29 @@ impl AmalgateReader {
         return false;
     }
 
-    pub fn get_multiline_arguments(&self, line: &str) -> (Vec<String>, Vec<String>) {
-        (vec![], vec![]) // TODO: (Arguments from line and body)
+    /// Pulls an amalgate multiline function call, starting at the first line of rest_lines
+    pub fn amalgate_multiline_function_argumnets(&self, rest_lines: Vec<FileLine>) -> (Vec<String>, Vec<String>) {
+        let mut all_lines: Vec<FileLine> = rest_lines;
+        let mut home_line: FileLine = all_lines.as_slice()[0].clone();
+        home_line.line_text = substring(&home_line.line_text, &1, &(home_line.line_text.len() as u32));
+        let first_line_arguments = match self.amalgate_function_arguments(&home_line) {
+            Ok(x) => x,
+            Err(x) => {println!("{}", x); panic!("LORD JESUS");}
+        };
+
+        let mut body_lines: Vec<String> = vec![];
+
+
+        for line in all_lines.split_off(1) {
+            let line_as_string: String = line.line_text.to_string();
+
+            // Multi-Line functions are terminated with lines just consisting of '=='
+            if line_as_string.eq(&"==".to_string()) {
+                break;
+            }
+            body_lines.push(line_as_string.clone());
+        }
+        return (first_line_arguments, body_lines);
     }
 
     pub fn amalgate_function_arguments(&self, line: &FileLine) -> Result<Vec<String>, String> {
@@ -73,8 +94,8 @@ impl AmalgateReader {
             }
             return Ok(arguments);
         }
-        return Err(format!("[{}, line {}]: Cannot find a valid amalgate function at point.",
-                           line.file_name, line.line_number));
+        return Err(format!("[{}, line {}, text: |{}|]: Cannot find a valid amalgate function at point.",
+                           line.file_name, line.line_number, line.line_text));
     }
 
     pub fn amalgate_function_name(&self, line: &FileLine) -> Result<String, String> {
